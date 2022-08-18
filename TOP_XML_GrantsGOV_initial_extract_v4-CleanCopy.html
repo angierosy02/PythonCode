@@ -14813,8 +14813,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replace pd.NaT on datetime columns to np.nan since it is not accepted in MongoDB.</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replace pd.NaT on datetime columns to np.nan for Tableau.</span>
+<span class="c1"># import numpy as np</span>
 <span class="c1"># xml_df[&#39;PostDate&#39;].replace({pd.NaT: np.nan}, inplace = True)</span>
 <span class="c1"># xml_df[&#39;CloseDate&#39;].replace({pd.NaT: np.nan}, inplace = True)</span>
 <span class="c1"># xml_df[&#39;LastUpdatedDate&#39;].replace({pd.NaT: np.nan}, inplace = True)</span>
@@ -14960,7 +14960,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replace pd.NaT on datetime columns to np.nan since it is not accepted in MongoDB.</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replace pd.NaT on datetime columns to None since it is not accepted in MongoDB.</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="n">filtered_df</span><span class="p">[</span><span class="s1">&#39;PostDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">pd</span><span class="o">.</span><span class="n">NaT</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">filtered_df</span><span class="p">[</span><span class="s1">&#39;CloseDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">pd</span><span class="o">.</span><span class="n">NaT</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
@@ -15127,9 +15128,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h5 id="Seudo-code:">Seudo-code:<a class="anchor-link" href="#Seudo-code:">&#182;</a></h5><p>Call the data in MongoDB (previous version of the database) - comes as a list of dictionaries<br>
-Compare to the new version of XML extract<br>
-Use LastUpdatedDate paired with the OpportunityID to check for updates or new grants<br>
-If OpportunityID is not in database then add the new row of data to database<br>
+Compare to the new version of XML extract</p>
+<p>If OpportunityID is not in database then add the new row of data to database<br>
 If OpportunityID is in database and has something different then update row in database<br>
 Else do nothing</p>
 <p><strong>new grants identified - collection.insert_one()  </strong>updated grants - collection.update_one()</p>
@@ -15145,7 +15145,7 @@ Else do nothing</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Bring each document (row of data) stored in MongoDB into python as a dictionary dtype</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Bring each document (row of data) stored in MongoDB into python as a list of dictionaries</span>
 
 <span class="n">old_data_list</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">old_data</span> <span class="ow">in</span> <span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">({}):</span>
@@ -15165,8 +15165,9 @@ Else do nothing</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">old_data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">old_data_list</span><span class="p">)</span>
-<span class="c1"># Creates a list of dictionaries, each dictionary is one grant </span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Creates a dataframe from the list of dictionaries</span>
+
+<span class="n">old_data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">old_data_list</span><span class="p">)</span>
 </pre></div>
 
      </div>
